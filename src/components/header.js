@@ -11,7 +11,7 @@ import {
 import { HeaderNav, Logo, Menu } from "../styles/headerStyles"
 import { Container, Flex } from "../styles/globalStyles"
 
-const Header = () => {
+const Header = ({ changeCursorType }) => {
   const dispatch = useGlobalDispatchContext()
   const { currentTheme } = useGlobalStateContext()
 
@@ -37,9 +37,16 @@ const Header = () => {
     >
       <Container>
         <Flex spaceBetween noHeight>
-          <Logo>
+          <Logo
+            onMouseEnter={() => changeCursorType("hovered")}
+            onMouseLeave={changeCursorType}
+          >
             <Link to="/">FURR</Link>
-            <span onClick={toggleTheme}></span>
+            <span
+              onClick={toggleTheme}
+              onMouseEnter={() => changeCursorType("pointer")}
+              onMouseLeave={changeCursorType}
+            ></span>
             <Link to="/">W</Link>
           </Logo>
           <Menu>

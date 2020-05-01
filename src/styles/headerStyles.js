@@ -20,8 +20,8 @@ export const Logo = styled.div`
   }
 
   span {
-    width: 1rem;
-    height: 1rem;
+    height: 16px;
+    width: 16px;
     background: ${({ theme }) => theme.red};
     margin: 0 4px;
     border-radius: 100%;

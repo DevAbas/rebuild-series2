@@ -1,13 +1,16 @@
-import React, { useState } from "react"
+import React from "react"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
 
 // Context
-import { useGlobalStateContext } from "../context/globalContext"
+import {
+  useGlobalStateContext,
+  useGlobalDispatchContext,
+} from "../context/globalContext"
 
 // Components
 import Header from "./header"
-import CustomCursor from "./CustomCurser"
+import CustomCursor from "./CustomCursor"
 
 // Styled components
 import { createGlobalStyle, ThemeProvider } from "styled-components"
@@ -46,6 +49,9 @@ const Layout = ({ children }) => {
     }
   `)
 
+  const dispatch = useGlobalDispatchContext()
+  const { currentTheme, cursorStyles } = useGlobalStateContext()
+
   const darkTheme = {
     background: "#000",
     text: "#fff",
@@ -58,13 +64,16 @@ const Layout = ({ children }) => {
     red: "#ea291e",
   }
 
-  const { currentTheme } = useGlobalStateContext()
+  const onCursor = cursorType => {
+    cursorType = (cursorStyles.includes(cursorType) && cursorType) || false
+    dispatch({ type: "CURSOR_TYPE", cursorType: cursorType })
+  }
 
   return (
     <ThemeProvider theme={currentTheme === "dark" ? darkTheme : lightTheme}>
       <GlobalStyle />
       <CustomCursor />
-      <Header />
+      <Header changeCursorType={onCursor} />
       <main>{children}</main>
     </ThemeProvider>
   )
