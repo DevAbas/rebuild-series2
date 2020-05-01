@@ -7,6 +7,7 @@ import { useGlobalStateContext } from "../context/globalContext"
 
 // Components
 import Header from "./header"
+import CustomCursor from "./CustomCurser"
 
 // Styled components
 import { createGlobalStyle, ThemeProvider } from "styled-components"
@@ -17,6 +18,7 @@ const GlobalStyle = createGlobalStyle`
 
   *{
     text-decoration: none;
+    cursor: none;
   }
 
   html {
@@ -28,7 +30,6 @@ const GlobalStyle = createGlobalStyle`
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     background: ${({ theme }) => theme.background};
-    color: ${({ theme }) => theme.text};
     scroll-behavior: none;
     overflow-x: hidden;
   }
@@ -62,6 +63,7 @@ const Layout = ({ children }) => {
   return (
     <ThemeProvider theme={currentTheme === "dark" ? darkTheme : lightTheme}>
       <GlobalStyle />
+      <CustomCursor />
       <Header />
       <main>{children}</main>
     </ThemeProvider>
