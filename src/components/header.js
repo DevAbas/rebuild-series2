@@ -45,6 +45,8 @@ const Header = ({ changeCursorType }) => {
             <span
               onClick={toggleTheme}
               onMouseEnter={() => changeCursorType("pointer")}
+              onMouseMove={() => changeCursorType("pointer")}
+              onMouseOver={() => changeCursorType("pointer")}
               onMouseLeave={changeCursorType}
             ></span>
             <Link to="/">W</Link>
