@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
 
@@ -11,6 +11,7 @@ import {
 // Components
 import Header from "./header"
 import CustomCursor from "./CustomCursor"
+import Navigation from "../components/navigation"
 
 // Styled components
 import { createGlobalStyle, ThemeProvider } from "styled-components"
@@ -39,6 +40,8 @@ const GlobalStyle = createGlobalStyle`
 `
 
 const Layout = ({ children }) => {
+  const [toggleMenu, setToggleMenu] = useState(false)
+
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -72,8 +75,17 @@ const Layout = ({ children }) => {
   return (
     <ThemeProvider theme={currentTheme === "dark" ? darkTheme : lightTheme}>
       <GlobalStyle />
-      <CustomCursor />
-      <Header changeCursorType={onCursor} />
+      <CustomCursor toggleMenu={toggleMenu} />
+      <Header
+        toggleMenu={toggleMenu}
+        setToggleMenu={setToggleMenu}
+        changeCursorType={onCursor}
+      />
+      <Navigation
+        toggleMenu={toggleMenu}
+        setToggleMenu={setToggleMenu}
+        changeCursorType={onCursor}
+      />
       <main>{children}</main>
     </ThemeProvider>
   )

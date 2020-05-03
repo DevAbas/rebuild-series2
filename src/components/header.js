@@ -11,7 +11,7 @@ import {
 import { HeaderNav, Logo, Menu } from "../styles/headerStyles"
 import { Container, Flex } from "../styles/globalStyles"
 
-const Header = ({ changeCursorType }) => {
+const Header = ({ changeCursorType, toggleMenu, setToggleMenu }) => {
   const dispatch = useGlobalDispatchContext()
   const { currentTheme } = useGlobalStateContext()
 
@@ -51,7 +51,7 @@ const Header = ({ changeCursorType }) => {
             ></span>
             <Link to="/">W</Link>
           </Logo>
-          <Menu>
+          <Menu onClick={() => setToggleMenu(!toggleMenu)}>
             <button>
               <span></span>
               <span></span>
