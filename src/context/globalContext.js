@@ -19,9 +19,10 @@ const globalReducer = (state, action) => {
 
 const initialState = {
   currentTheme:
+    typeof window !== "undefined" &&
     window.localStorage.getItem("theme") === null
       ? "dark"
-      : window.localStorage.getItem("theme"),
+      : typeof window !== "undefined" && window.localStorage.getItem("theme"),
   cursorType: false,
   cursorStyles: ["pointer", "hovered"],
 }
