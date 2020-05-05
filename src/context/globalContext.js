@@ -1,7 +1,22 @@
-import React, { createContext, useReducer, useContext } from "react"
+import React, {
+  createContext,
+  useReducer,
+  useContext,
+  useEffect,
+  useState,
+} from "react"
 
+const initialState = {
+  currentTheme:
+    typeof window !== "undefined" &&
+    window.localStorage.getItem("theme") === null
+      ? "dark"
+      : typeof window !== "undefined" && window.localStorage.getItem("theme"),
+  cursorType: false,
+  cursorStyles: ["pointer", "hovered"],
+}
 // Define context
-const GlobalStateContext = createContext()
+const GlobalStateContext = createContext(initialState)
 const GlobalDispatchContext = createContext()
 
 // Reducer
@@ -15,16 +30,6 @@ const globalReducer = (state, action) => {
       throw new Error(`Unhandled action type: ${action.type}`)
     }
   }
-}
-
-const initialState = {
-  currentTheme:
-    typeof window !== "undefined" &&
-    window.localStorage.getItem("theme") === null
-      ? "dark"
-      : typeof window !== "undefined" && window.localStorage.getItem("theme"),
-  cursorType: false,
-  cursorStyles: ["pointer", "hovered"],
 }
 
 // Provider

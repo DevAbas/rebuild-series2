@@ -16,7 +16,7 @@ const Header = ({ changeCursorType, toggleMenu, setToggleMenu }) => {
   const { currentTheme } = useGlobalStateContext()
 
   useEffect(() => {
-    if (currentTheme && typeof window !== "undefined") {
+    if (currentTheme) {
       localStorage.setItem("theme", currentTheme)
     }
   }, [currentTheme])
