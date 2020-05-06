@@ -1,23 +1,34 @@
-import React, { useEffect, useState } from "react"
+import { useState, useEffect } from "react"
 
 export default function useWindowSize() {
+  const isClient = typeof window === "object"
+
   function getSize() {
     return {
-      width: typeof window !== "undefined" && window.innerWidth,
-      height: typeof window !== "undefined" && window.innerHeight,
+      width: isClient ? window.innerWidth : undefined,
+      height: isClient ? window.innerHeight : undefined,
     }
   }
-  const [windowSize, setWindowSize] = useState(getSize)
+
+  const [windowSize, setWindowSize] = useState(getSize())
 
   useEffect(() => {
-    function handleResize() {
-      setWindowSize(getSize())
+    if (!isClient) {
+      return false
     }
 
-    window.addEventListener("resize", handleResize)
+    // timeoutId for debounce mechanism
+    let timeoutId = null
+    const resizeListener = () => {
+      // prevent execution of previous setTimeout
+      clearTimeout(timeoutId)
+      // change width from the state object after 150 milliseconds
+      timeoutId = setTimeout(() => setWindowSize(getSize()), 150)
+    }
 
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
+    window.addEventListener("resize", resizeListener)
+    return () => window.removeEventListener("resize", resizeListener)
+  }, [isClient, setWindowSize]) // Empty array ensures that effect is only run on mount and unmount
 
   return windowSize
 }

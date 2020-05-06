@@ -1,40 +1,40 @@
-import React, {
-  createContext,
-  useReducer,
-  useContext,
-  useEffect,
-  useState,
-} from "react"
+import React, { createContext, useReducer, useContext } from "react"
 
-const initialState = {
-  currentTheme:
-    typeof window !== "undefined" &&
-    window.localStorage.getItem("theme") === null
-      ? "dark"
-      : typeof window !== "undefined" && window.localStorage.getItem("theme"),
-  cursorType: false,
-  cursorStyles: ["pointer", "hovered"],
-}
-// Define context
-const GlobalStateContext = createContext(initialState)
+//Define Conext
+const GlobalStateContext = createContext()
 const GlobalDispatchContext = createContext()
 
-// Reducer
+//Reducer
 const globalReducer = (state, action) => {
   switch (action.type) {
-    case "TOGGLE_THEME":
-      return { ...state, currentTheme: action.theme }
-    case "CURSOR_TYPE":
-      return { ...state, cursorType: action.cursorType }
+    case "TOGGLE_THEME": {
+      return {
+        ...state,
+        currentTheme: action.theme,
+      }
+    }
+    case "CURSOR_TYPE": {
+      return {
+        ...state,
+        cursorType: action.cursorType,
+      }
+    }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`)
     }
   }
 }
 
-// Provider
+const isBrowser = () => typeof window !== "undefined"
+
+//Provider
 export const GlobalProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(globalReducer, initialState)
+  const [state, dispatch] = useReducer(globalReducer, {
+    currentTheme:
+      (isBrowser() && window.localStorage.getItem("theme")) || "dark",
+    cursorType: false,
+    cursorStyles: ["pointer", "hovered", "locked", "white"],
+  })
 
   return (
     <GlobalDispatchContext.Provider value={dispatch}>
@@ -45,7 +45,7 @@ export const GlobalProvider = ({ children }) => {
   )
 }
 
-// Custom hooks for when we want to use global state
+//custom hooks for when we want to use our global state
 export const useGlobalStateContext = () => useContext(GlobalStateContext)
 
 export const useGlobalDispatchContext = () => useContext(GlobalDispatchContext)

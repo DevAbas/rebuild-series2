@@ -19,6 +19,7 @@ const HomeBanner = ({ changeCursorType }) => {
   const windowSize = useWindowSize()
   const { currentTheme } = useGlobalStateContext()
   let canvas = useRef(null)
+  let videoRef = useRef(null)
 
   useEffect(() => {
     let renderingElement = canvas.current
@@ -26,6 +27,12 @@ const HomeBanner = ({ changeCursorType }) => {
     let drawingElement = renderingElement.cloneNode()
     let drawingCtx = drawingElement.getContext("2d")
     let renderingCtx = renderingElement.getContext("2d")
+    renderingCtx.canvas.width = windowSize.width
+    renderingCtx.canvas.height = windowSize.height
+    drawingCtx.canvas.width = windowSize.width
+    drawingCtx.canvas.height = windowSize.height
+    videoRef.current.style.opacity = "1"
+
     let lastX
     let lastY
     let moving = false
@@ -33,7 +40,6 @@ const HomeBanner = ({ changeCursorType }) => {
     renderingCtx.globalCompositeOperation = "source-over"
     renderingCtx.fillStyle = currentTheme === "dark" ? "#000000" : "#ffffff"
     renderingCtx.fillRect(0, 0, windowSize.width, windowSize.height)
-
     renderingElement.addEventListener("mouseover", ev => {
       moving = true
       lastX = ev.pageX - renderingElement.offsetLeft
@@ -69,7 +75,7 @@ const HomeBanner = ({ changeCursorType }) => {
         renderingCtx.drawImage(drawingElement, 0, 0)
       }
     })
-  }, [currentTheme])
+  }, [currentTheme, windowSize])
 
   const container = {
     initial: { y: 800 },
@@ -93,7 +99,7 @@ const HomeBanner = ({ changeCursorType }) => {
 
   return (
     <Banner>
-      <Video>
+      <Video ref={videoRef}>
         <video
           src={require("../../assets/video/video.mp4")}
           width="100%"
@@ -104,8 +110,8 @@ const HomeBanner = ({ changeCursorType }) => {
       </Video>
       <Canvas
         ref={canvas}
-        width={windowSize.width}
-        height={windowSize.height}
+        // width={1440}
+        // height={702}
         onMouseEnter={() => changeCursorType("hovered")}
         onMouseLeave={changeCursorType}
       />
